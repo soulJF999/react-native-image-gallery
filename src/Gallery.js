@@ -104,7 +104,7 @@ export default class Gallery extends PureComponent {
                 this.activeResponder.onMove(evt, gestureState);
                 const dy = gestureState.moveY - gestureState.previousMoveY;
                 const dx = gestureState.moveX - gestureState.previousMoveX;
-                if (dy > 80 && dx<=10) {
+                if (dy > 20 && dx<=10) {
                   console.log('no', this.props.onSwipeVertical)
                   this.props.onSwipedVertical && this.props.onSwipedVertical(this.currentPage)
                 }
