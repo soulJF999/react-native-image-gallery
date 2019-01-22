@@ -131,27 +131,58 @@ export default class Gallery extends PureComponent {
             }
         };
 
-        this.imageResponder = {
-            onStart: (evt, gestureState) => {
-                const currentImageTransformer = this.getCurrentImageTransformer();
-                currentImageTransformer && currentImageTransformer.onResponderGrant(evt, gestureState);
-                if (this.props.onLongPress) {
-                    this._longPressTimeout = setTimeout(() => {
-                        this.props.onLongPress(gestureState);
-                    }, 600);
-                }
-            },
-            onMove: (evt, gestureState) => {
-                const currentImageTransformer = this.getCurrentImageTransformer();
-                currentImageTransformer && currentImageTransformer.onResponderMove(evt, gestureState);
-                clearTimeout(this._longPressTimeout);
-            },
-            onEnd: (evt, gestureState) => {
-                const currentImageTransformer = this.getCurrentImageTransformer();
-                currentImageTransformer && currentImageTransformer.onResponderRelease(evt, gestureState);
-                clearTimeout(this._longPressTimeout);
-            }
-        };
+      this.imageResponder = {
+        onStart: (evt, gestureState) => {
+          const currentImageTransformer = this.getCurrentImageTransformer();
+          const data = { evt, gestureState, viewTransformer: currentImageTransformer };
+          !(this.props.onImageResponderStart && this.props.onImageResponderStart(data)) &&
+          currentImageTransformer &&
+          currentImageTransformer.onResponderGrant(evt, gestureState);
+          if (this.props.onLongPress) {
+            this._longPressTimeout = setTimeout(() => {
+              this.props.onLongPress(gestureState);
+            }, 600);
+          }
+        },
+        onMove: (evt, gestureState) => {
+          const currentImageTransformer = this.getCurrentImageTransformer();
+          const data = { evt, gestureState, viewTransformer: currentImageTransformer };
+          !(this.props.onImageResponderMove && this.props.onImageResponderMove(data)) &&
+          currentImageTransformer &&
+          currentImageTransformer.onResponderMove(evt, gestureState);
+          clearTimeout(this._longPressTimeout);
+        },
+        onEnd: (evt, gestureState) => {
+          const currentImageTransformer = this.getCurrentImageTransformer();
+          const data = { evt, gestureState, viewTransformer: currentImageTransformer };
+          !(this.props.onImageResponderEnd && this.props.onImageResponderEnd(data)) &&
+          currentImageTransformer &&
+          currentImageTransformer.onResponderRelease(evt, gestureState);
+          clearTimeout(this._longPressTimeout);
+        },
+      };
+
+        // this.imageResponder = {
+        //     onStart: (evt, gestureState) => {
+        //         const currentImageTransformer = this.getCurrentImageTransformer();
+        //         currentImageTransformer && currentImageTransformer.onResponderGrant(evt, gestureState);
+        //         if (this.props.onLongPress) {
+        //             this._longPressTimeout = setTimeout(() => {
+        //                 this.props.onLongPress(gestureState);
+        //             }, 600);
+        //         }
+        //     },
+        //     onMove: (evt, gestureState) => {
+        //         const currentImageTransformer = this.getCurrentImageTransformer();
+        //         currentImageTransformer && currentImageTransformer.onResponderMove(evt, gestureState);
+        //         clearTimeout(this._longPressTimeout);
+        //     },
+        //     onEnd: (evt, gestureState) => {
+        //         const currentImageTransformer = this.getCurrentImageTransformer();
+        //         currentImageTransformer && currentImageTransformer.onResponderRelease(evt, gestureState);
+        //         clearTimeout(this._longPressTimeout);
+        //     }
+        // };
     }
 
     componentDidMount () {
