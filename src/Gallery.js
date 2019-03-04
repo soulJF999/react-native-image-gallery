@@ -162,27 +162,6 @@ export default class Gallery extends PureComponent {
       },
     };
 
-    // this.imageResponder = {
-    //     onStart: (evt, gestureState) => {
-    //         const currentImageTransformer = this.getCurrentImageTransformer();
-    //         currentImageTransformer && currentImageTransformer.onResponderGrant(evt, gestureState);
-    //         if (this.props.onLongPress) {
-    //             this._longPressTimeout = setTimeout(() => {
-    //                 this.props.onLongPress(gestureState);
-    //             }, 600);
-    //         }
-    //     },
-    //     onMove: (evt, gestureState) => {
-    //         const currentImageTransformer = this.getCurrentImageTransformer();
-    //         currentImageTransformer && currentImageTransformer.onResponderMove(evt, gestureState);
-    //         clearTimeout(this._longPressTimeout);
-    //     },
-    //     onEnd: (evt, gestureState) => {
-    //         const currentImageTransformer = this.getCurrentImageTransformer();
-    //         currentImageTransformer && currentImageTransformer.onResponderRelease(evt, gestureState);
-    //         clearTimeout(this._longPressTimeout);
-    //     }
-    // };
   }
 
   componentDidMount () {
@@ -272,7 +251,7 @@ export default class Gallery extends PureComponent {
     })}
     onTransformGestureReleased={((transform) => {
       // need the 'return' here because the return value is checked in ViewTransformer
-       onTransformGestureReleased && onTransformGestureReleased(transform, pageId);
+      return onTransformGestureReleased && onTransformGestureReleased(transform, pageId);
     })}
     ref={((ref) => { this.imageRefs.set(pageId, ref); })}
     key={'innerImage#' + pageId}
